@@ -1,11 +1,24 @@
-name_car = "Enter your car: "
 
-text1 = input(name_car)
-text2 = input(name_car)
-text3 = input(name_car)
+list_cars = []
 
-list_cars = [text1, text2, text3]
+while True:
+    user_action = input("Add new car, show, edit or exit:")
+    name_car = user_action.strip()
 
-print(list_cars)
+    match name_car:
+        case 'add':
+            car_name = input("Enter a car: ")
+            list_cars.append(car_name)
+        case 'show':
+            for item in list_cars:
+                print(item)
+        case 'edit':
+            number = int(input("Number of the car to edit: "))
+            number -= 1
+            new_car = input("Enter new car: ")
+            list_cars[number] = new_car
+        case 'exit':
+            break
 
-print(type(list_cars))
+
+print("Have a great day!")
