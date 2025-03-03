@@ -1,27 +1,69 @@
+from pyexpat.errors import messages
 
-list_cars = []
+
+def get_car():
+    with open('cars.txt', 'r') as file:
+        cars = file.readlines()
+    return cars
 
 while True:
     user_action = input("Add new car, show, edit, complate or exit:")
     name_car = user_action.strip()
 
-    match name_car:
-        case 'add':
-            car_name = input("Enter a car: ")
-            list_cars.append(car_name)
-        case 'show':
-            for index, item in enumerate(list_cars):
-                print(f"{index + 1}-{item}")
-        case 'edit':
-            number = int(input("Number of the car to edit: "))
+
+    if user_action.startswith('add'):
+        car_name = user_action[4:]
+
+        cars = get_car()
+
+        cars.append(car_name + '\n')
+
+    elif user_action.startswith('show'):
+        cars = get_car()
+
+        for index, item in enumerate(cars):
+            item = item.strip('\n')
+            row = f"{index + 1}-{item}"
+            print(row)
+
+
+    elif user_action.startswith('edit'):
+       try:
+
+            number = int(user_action[5:])
+            print(number)
+
             number -= 1
+
+            cars = get_car()
+
             new_car = input("Enter new car: ")
-            list_cars[number] = new_car
-        case 'complete':
-            number = int(input("Number of the car to complete: "))
-            list_cars.pop(number)
-        case 'exit':
-            break
+            cars[number] = new_car + '\n'
+
+            with open('cars.txt', 'w') as file:
+                file.writelines(cars)
+
+       except ValueError:
+           print("Your command is not valid!")
+           continue
+    elif user_action.startswith('complete'):
+        number = int(user_action[9:])
+
+        cars = get_car()
+        index = number - 1
+        cars_remove = cars[index].strip('\n')
+        cars.pop(index)
+
+        with open('cars.txt', 'w') as file:
+            file.writelines(cars)
+
+        messages = f" This car {cars_remove} was remove from the list."
+        print(messages)
+    elif user_action.startswith('exit'):
+        break
+    else:
+        print("Command isn't valid.")
+
 
 
 print("Have a great day!")
