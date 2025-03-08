@@ -1,7 +1,4 @@
-def get_car():
-    with open('cars.txt', 'r') as file_local:
-        cars = file_local.readlines()
-    return cars
+from functions import get_car, write_cars
 
 while True:
     user_action = input("Add new car, show, edit, complete or exit: ")
@@ -15,8 +12,7 @@ while True:
 
         cars.append(car_name + '\n')
 
-        with open('cars.txt', 'w') as file:
-            file.writelines(cars)
+        write_cars(cars)
 
     elif user_action.startswith("show"):
 
@@ -41,8 +37,7 @@ while True:
             new_car = input("Enter new car: ")
             cars[number] = new_car + '\n'
 
-            with open('cars.txt', 'w') as file:
-                file.writelines(cars)
+            write_cars(cars)
 
        except ValueError:
            print("Your command is not valid!")
@@ -59,8 +54,7 @@ while True:
             cars_remove = cars[index].strip('\n')
             cars.pop(index)
 
-            with open('cars.txt', 'w') as file:
-                file.writelines(cars)
+            write_cars(cars)
 
             messages = f" This car {cars_remove} was remove from the list."
             print(messages)
