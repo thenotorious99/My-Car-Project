@@ -1,5 +1,7 @@
 from functions import get_car, write_cars
+import time
 
+now = time.strftime("%b %d, %Y %H:%M:%S")
 while True:
     user_action = input("Add new car, show, edit, complete or exit: ")
     name_car = user_action.strip()
