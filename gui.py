@@ -2,8 +2,6 @@ import functions
 import FreeSimpleGUI as sg
 import time
 
-now = time.strftime("%b %d, %Y %H:%M:%S")
-
 sg.theme("BlueMono")
 
 clock = sg.Text("", key="clock")
@@ -32,7 +30,43 @@ while True:
     match event:
         case "Add":
             cars = functions.get_car()
-            index = cars.index(cars_to_edit)
-            cars[index] = new_cars
+            new_cars = values['car'] + '\n'
+            cars.append(new_cars)
             functions.write_cars(cars)
             window['items'].update(values=cars)
+
+        case 'Edit':
+            try:
+                cars_to_edit = values['items'][0]
+                new_cars = values['car']
+
+                cars = functions.get_car()
+                index = cars.index(cars_to_edit)
+                cars[index] = new_cars
+                functions.write_cars(cars)
+                window['items'].update(values=cars)
+            except IndexError:
+                sg.popup("Please select name of cars first.", font=("Helvetica", 20))
+
+        case 'Complete':
+            try:
+                cars_to_complete = values['items'][0]
+                cars = functions.get_car()
+                cars.remove(cars_to_complete)
+                functions.write_cars(cars)
+                window['items'].update(values=cars)
+                window['car'].update(value='')
+
+            except IndexError:
+                sg.popup("Please select name of cars first.", font=("Halvetica", 20))
+
+        case 'Exit':
+            break
+
+        case 'cars':
+            window['car'].update(value=values['items'])
+
+        case sg.WIN_CLOSED:
+            break
+
+window.close()
